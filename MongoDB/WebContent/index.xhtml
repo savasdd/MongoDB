@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Hello MongoDB:)</title>
+
+	<style type="text/css">
+.kolon {
+	float: left;
+	border: 1px solid red;
+	padding: 10px;
+	margin: 10px;
+	margin-left: 25px;
+}
+
+#inner {
+	width: 1050px;
+}
+</style>
+</h:head>
+
+<h:body>
+
+
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+		<div class="kolon">
+
+
+			<table>
+
+				<tr>
+					<td><strong>İsim:</strong></td>
+					<td><p:inputText value="#{mongobean.name}" /></td>
+				</tr>
+
+				<tr>
+					<td><strong>Soyisim:</strong></td>
+					<td><p:inputText value="#{mongobean.surname}" /></td>
+				</tr>
+
+				<tr>
+					<td><strong>Doğum Tarihi:</strong></td>
+					<td><p:calendar id="popup" value="#{mongobean.birthDate}" /></td>
+				</tr>
+
+				<tr>
+					<td><strong>Kullanıcı Adı:</strong></td>
+					<td><p:inputText value="#{mongobean.userName}" /></td>
+				</tr>
+
+				<tr>
+					<td><strong>Şifre:</strong></td>
+					<td><p:password id="nonFeedback" value="#{mongobean.password}" /></td>
+				</tr>
+
+				<tr>
+					<td></td>
+					<td><p:commandButton value="Kaydet" id="ajax"
+							actionListener="#{mongobean.register()}"
+							styleClass="ui-priority-primary" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><p:outputLabel id="label" value="..." /></td>
+				</tr>
+
+			</table>
+
+		</div>
+
+
+		<div class="kolon">
+			<div id="inner">
+
+
+				<p:dataTable id="tablo" var="val" value="#{dataListBean.userList}"
+					selectionMode="single" selection="#{mongobean.select}"
+					rowKey="#{val.name}">
+					<f:facet name="header">
+                     KAYITLI KULLANICILAR
+                   </f:facet>
+					<p:ajax event="rowSelect" listener="#{mongobean.onRowSelect}"
+						update=":form:msgs" />
+					<p:ajax event="rowUnselect" listener="#{mongobean.onRowUnselect}"
+						update=":form:msgs" />
+
+					<p:column headerText=" " style="width:30px;">
+						<f:facet name="header">
+							 <h:graphicImage  value="images/folder_trash.png" />
+						</f:facet>
+					</p:column>
+
+					<p:column headerText="İsim">
+						<h:outputText value="#{val.name}" />
+					</p:column>
+					<p:column headerText="Soyisim">
+						<h:outputText value="#{val.surname}" />
+					</p:column>
+					<p:column headerText="Kullanıcı Adı">
+						<h:outputText value="#{val.username}" />
+					</p:column>
+					<p:column headerText="Doğum Tarihi">
+						<h:outputText value="#{val.birthDate}" />
+					</p:column>
+					<p:column headerText="Kayıt Tarihi">
+						<h:outputText value="#{val.createdDate}" />
+					</p:column>
+				</p:dataTable>
+
+
+
+			</div>
+
+		</div>
+		<div style='clear: both' />
+
+	</h:form>
+
+
+</h:body>
+</html>
